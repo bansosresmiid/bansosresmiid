@@ -441,4 +441,292 @@ export default function AdminDashboard({
                   <label className="text-[10px] font-bold text-slate-500 uppercase">Email</label>
                   <input
                     type="email"
-                    value={for
+                    value={formEmail}
+                    onChange={(e) => setFormEmail(e.target.value)}
+                    className="w-full px-3 py-1.5 border border-slate-300 rounded text-xs"
+                    required
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-[10px] font-bold text-slate-500 uppercase">No HP</label>
+                  <input
+                    type="text"
+                    value={formHp}
+                    onChange={(e) => setFormHp(e.target.value.replace(/\D/g, ''))}
+                    className="w-full px-3 py-1.5 border border-slate-300 rounded font-mono text-xs"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold text-slate-500 uppercase">Alamat Lengkap</label>
+                <textarea
+                  value={formAlamat}
+                  onChange={(e) => setFormAlamat(e.target.value)}
+                  rows={2}
+                  className="w-full px-3 py-1.5 border border-slate-300 rounded text-xs"
+                  required
+                />
+              </div>
+
+              <div className="grid grid-cols-3 gap-3 bg-slate-50 p-3 rounded border border-slate-100">
+                <div className="space-y-1">
+                  <label className="text-[10px] font-bold text-slate-500 uppercase">Bank Penerima</label>
+                  <select
+                    value={formBankName}
+                    onChange={(e) => setFormBankName(e.target.value)}
+                    className="w-full px-2 py-1.5 border border-slate-300 bg-white rounded text-xs"
+                  >
+                 <option value="Bank Mandiri">Bank Mandiri</option>
+                    <option value="Bank BRI">Bank BRI</option>
+                    <option value="Bank BNI">Bank BNI</option>
+                    <option value="Bank BTN">Bank BTN</option>
+                    <option value="Bank BCA">Bank BCA</option>
+                    <option value="Bank BSI">Bank BSI</option>
+                  </select>
+                </div>
+                <div className="space-y-1">
+                  <label className="text-[10px] font-bold text-slate-500 uppercase">No Rekening</label>
+                  <input
+                    type="text"
+                    value={formBankAccount}
+                    onChange={(e) => setFormBankAccount(e.target.value.replace(/\D/g, ''))}
+                    className="w-full px-2 py-1.5 border border-slate-300 rounded font-mono text-xs"
+                    required
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-[10px] font-bold text-slate-500 uppercase">Atas Nama</label>
+                  <input
+                    type="text"
+                    value={formBankAccountName}
+                    onChange={(e) => setFormBankAccountName(e.target.value)}
+                    className="w-full px-2 py-1.5 border border-slate-300 rounded text-xs"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold text-slate-500 uppercase block">Status Kelayakan</label>
+                <div className="flex gap-4">
+                  <label className="flex items-center gap-1.5 text-xs font-semibold text-slate-700">
+                    <input
+                      type="radio"
+                      checked={formStatus === 'Berhak'}
+                      onChange={() => setFormStatus('Berhak')}
+                      className="accent-slate-900"
+                    />
+                    Berhak (Rp3.400.000)
+                  </label>
+                  <label className="flex items-center gap-1.5 text-xs font-semibold text-slate-700">
+                    <input
+                      type="radio"
+                      checked={formStatus === 'Proses'}
+                      onChange={() => setFormStatus('Proses')}
+                      className="accent-slate-900"
+                    />
+                    Proses Verifikasi
+                  </label>
+                </div>
+              </div>
+
+              <div className="flex gap-2 pt-2 border-t border-slate-100 justify-end">
+                <button
+                  type="button"
+                  onClick={() => setEditingPenerima(null)}
+                  className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs rounded transition cursor-pointer"
+                >
+                  Batal
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded shadow-xs transition cursor-pointer flex items-center gap-1"
+                >
+                  <Save size={12} /> Simpan Data
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Add Modal */}
+      {isAddModalOpen && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 animate-fade-in">
+          <div className="bg-white rounded-xl border border-slate-200 shadow-xl max-w-lg w-full overflow-hidden">
+            <div className="bg-slate-950 text-white px-5 py-4 flex items-center justify-between border-b border-slate-800">
+              <h3 className="text-sm font-bold font-serif">➕ Tambah Pelanggan Baru (KPM)</h3>
+              <button
+                onClick={() => setIsAddModalOpen(false)}
+                className="text-slate-400 hover:text-white transition cursor-pointer"
+              >
+                <X size={16} />
+              </button>
+            </div>
+
+            <form onSubmit={handleAddSubmit} className="p-5 space-y-4 max-h-[80vh] overflow-y-auto">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <label className="text-[10px] font-bold text-slate-500 uppercase">NIK KTP (16 Digit)</label>
+                  <input
+                    type="text"
+                    maxLength={16}
+                    value={formNik}
+                    onChange={(e) => setFormNik(e.target.value.replace(/\D/g, ''))}
+                    placeholder="Contoh: 32730..."
+                    className="w-full px-3 py-1.5 border border-slate-300 rounded font-mono text-xs tracking-wider"
+                    required
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-[10px] font-bold text-slate-500 uppercase">Nomor KK (16 Digit)</label>
+                  <input
+                    type="text"
+                    maxLength={16}
+                    value={formKk}
+                    onChange={(e) => setFormKk(e.target.value.replace(/\D/g, ''))}
+                    placeholder="Contoh: 32730..."
+                    className="w-full px-3 py-1.5 border border-slate-300 rounded font-mono text-xs tracking-wider"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold text-slate-500 uppercase">Nama Lengkap</label>
+                <input
+                  type="text"
+                  value={formNama}
+                  onChange={(e) => setFormNama(e.target.value)}
+                  placeholder="Nama lengkap sesuai KTP"
+                  className="w-full px-3 py-1.5 border border-slate-300 rounded text-xs font-semibold"
+                  required
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <label className="text-[10px] font-bold text-slate-500 uppercase">Email</label>
+                  <input
+                    type="email"
+                    value={formEmail}
+                    onChange={(e) => setFormEmail(e.target.value)}
+                    placeholder="nama@email.com"
+                    className="w-full px-3 py-1.5 border border-slate-300 rounded text-xs"
+                    required
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-[10px] font-bold text-slate-500 uppercase">No HP</label>
+                  <input
+                    type="text"
+                    value={formHp}
+                    onChange={(e) => setFormHp(e.target.value.replace(/\D/g, ''))}
+                    placeholder="0812XXXXXXXX"
+                    className="w-full px-3 py-1.5 border border-slate-300 rounded font-mono text-xs"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold text-slate-500 uppercase">Alamat Lengkap</label>
+                <textarea
+                  value={formAlamat}
+                  onChange={(e) => setFormAlamat(e.target.value)}
+                  placeholder="RT/RW Kelurahan, Kecamatan, Kota"
+                  rows={2}
+                  className="w-full px-3 py-1.5 border border-slate-300 rounded text-xs"
+                  required
+                />
+              </div>
+
+              <div className="grid grid-cols-3 gap-3 bg-slate-50 p-3 rounded border border-slate-100">
+                <div className="space-y-1">
+                  <label className="text-[10px] font-bold text-slate-500 uppercase">Bank Penerima</label>
+                  <select
+                    value={formBankName}
+                    onChange={(e) => setFormBankName(e.target.value)}
+                    className="w-full px-2 py-1.5 border border-slate-300 bg-white rounded text-xs"
+                  >
+                    <option value="Bank Mandiri">Bank Mandiri</option>
+                    <option value="Bank BRI">Bank BRI</option>
+                    <option value="Bank BNI">Bank BNI</option>
+                    <option value="Bank BTN">Bank BTN</option>
+                    <option value="Bank BCA">Bank BCA</option>
+                    <option value="Bank BSI">Bank BSI</option>
+                  </select>
+                </div>
+                <div className="space-y-1">
+                  <label className="text-[10px] font-bold text-slate-500 uppercase">No Rekening</label>
+                  <input
+                    type="text"
+                    value={formBankAccount}
+                    onChange={(e) => setFormBankAccount(e.target.value.replace(/\D/g, ''))}
+                    placeholder="1234XXXXXXXX"
+                    className="w-full px-2 py-1.5 border border-slate-300 rounded font-mono text-xs"
+                    required
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-[10px] font-bold text-slate-500 uppercase">Atas Nama</label>
+                  <input
+                    type="text"
+                    value={formBankAccountName}
+                    onChange={(e) => setFormBankAccountName(e.target.value)}
+                    placeholder="Nama pemilik rekening"
+                    className="w-full px-2 py-1.5 border border-slate-300 rounded text-xs"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold text-slate-500 uppercase block">Status Kelayakan</label>
+                <div className="flex gap-4">
+                  <label className="flex items-center gap-1.5 text-xs font-semibold text-slate-700">
+                    <input
+                      type="radio"
+                      checked={formStatus === 'Berhak'}
+                      onChange={() => setFormStatus('Berhak')}
+                      className="accent-slate-900"
+                    />
+                    Berhak (Rp3.400.000)
+                    </label>
+                  <label className="flex items-center gap-1.5 text-xs font-semibold text-slate-700">
+                    <input
+                      type="radio"
+                      checked={formStatus === 'Proses'}
+                      onChange={() => setFormStatus('Proses')}
+                      className="accent-slate-900"
+                    />
+                    Proses Verifikasi
+                  </label>
+                </div>
+              </div>
+
+              <div className="flex gap-2 pt-2 border-t border-slate-100 justify-end">
+                <button
+                  type="button"
+                  onClick={() => setIsAddModalOpen(false)}
+                  className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs rounded transition cursor-pointer"
+                >
+                  Batal
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded shadow-xs transition cursor-pointer flex items-center gap-1"
+                >
+                  <PlusCircle size={12} /> Tambah Data
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+    </div>
+  );
+}
