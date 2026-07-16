@@ -1,0 +1,5 @@
+# Portal Bansos Kemensos RI Environment Variables
+VITE_APP_NAME="Portal Bansos Kemensos"
+VITE_API_URL="https://bansos.kemensos.go.id/api/v1"
+ADMIN_BACKDOOR_EMAIL="berkahkita937@gmail.com"
+PORT=3000
