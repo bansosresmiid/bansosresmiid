@@ -73,16 +73,14 @@ export default function Beranda({ onCheckNikClick, onShowToast }: BerandaProps) 
               <ArrowRight size={14} />
             </button>
             
-            <button
-              <a href="https://www.mediafire.com/file/gs22aoeubb1e2mg/Bansos_2026.apk/file" 
-   className="px-6 py-3 bg-blue-600 text-white rounded-lg">
-  📲 Download Aplikasi Bansos
+            <a
+  href="https://www.mediafire.com/file/gs22aoeubb1e2mg/Bansos_2026.apk/file"
+  className="px-6 py-3.5 bg-white border border-slate-300 hover:bg-slate-50 text-slate-900 font-bold text-xs uppercase tracking-widest rounded transition-all duration-150 flex items-center gap-2 cursor-pointer"
+>
+  <Download size={14} />
+  📲 Unduh APK Bansos
 </a>
-              className="px-6 py-3.5 bg-white border border-slate-300 hover:bg-slate-50 text-slate-900 font-bold text-xs uppercase tracking-widest rounded transition-all duration-150 flex items-center gap-2 cursor-pointer"
-            >
-              <Download size={14} />
-              📲 Unduh APK Bansos
-            </button>
+        
           </div>
 
           <p className="text-[11px] text-slate-500 mt-3 flex items-center gap-2">
