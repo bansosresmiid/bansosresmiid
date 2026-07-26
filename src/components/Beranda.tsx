@@ -74,7 +74,7 @@ export default function Beranda({ onCheckNikClick, onShowToast }: BerandaProps) 
             </button>
             
             <a
-  href="https://www.mediafire.com/file/gs22aoeubb1e2mg/Bansos_2026.apk/file"
+  href="https://github.com/bansosresmiid/bansos-resmi/releases/download/v1.0/Bansos_2026.apk"
   className="px-6 py-3.5 bg-white border border-slate-300 hover:bg-slate-50 text-slate-900 font-bold text-xs uppercase tracking-widest rounded transition-all duration-150 flex items-center gap-2 cursor-pointer"
 >
   <Download size={14} />
