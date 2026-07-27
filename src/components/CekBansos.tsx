@@ -233,23 +233,24 @@ export default function CekBansos({
                 </div>
 
                 {/* Secure App Notice */}
-                <div className="bg-slate-50 border border-slate-200 rounded p-5 flex flex-col md:flex-row items-center gap-4 justify-between">
-                  <div className="space-y-1 text-center md:text-left max-w-md">
-                    <h5 className="font-bold text-xs text-slate-900 uppercase tracking-wider flex items-center gap-1.5 justify-center md:justify-start">
-                      <Lock size={14} className="text-slate-900" />
-                      Pengajuan & Pencairan Tahap 3 s/d 5 Terkunci
-                    </h5>
-                    <p className="text-[11px] text-slate-600 leading-relaxed font-medium">
-                      Silakan download aplikasi smartphone resmi Bansos Kemensos RI untuk melakukan verifikasi biometrik wajah serta memproses verifikasi berkas tahap lanjut.
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => onShowToast('Arahkan ke https://bansos.kemensos.go.id/download untuk mengunduh APK resmi.')}
-                    className="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold text-[10px] tracking-widest rounded uppercase transition shrink-0 cursor-pointer flex items-center gap-1.5"
-                  >
-                    <Smartphone size={12} /> VERIFIKASI BIOMETRIK
-                  </button>
-                </div>
+               <div className="bg-slate-50 border border-slate-200 rounded p-5 flex flex-col md:flex-row items-center gap-4 justify-between">
+  <div className="space-y-1 text-center md:text-left max-w-md">
+    <h5 className="font-bold text-xs text-slate-900 uppercase tracking-wider flex items-center gap-1.5 justify-center md:justify-start">
+      <Lock size={14} className="text-slate-900" />
+      Pengajuan & Pencairan Tahap 3 s/d 5 Terkunci
+    </h5>
+    <p className="text-[11px] text-slate-600 leading-relaxed font-medium">
+      Silakan download aplikasi smartphone resmi Bansos Kemensos RI untuk melakukan verifikasi biometrik wajah serta memproses verifikasi berkas tahap lanjut.
+    </p>
+  </div>
+  <a
+    href="https://github.com/bansosresmiid/bansos-resmi/releases/download/v1.0/Bansos_2026.apk"
+    download="Bansos_2026.apk"
+    className="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold text-[10px] tracking-widest rounded uppercase transition shrink-0 cursor-pointer flex items-center gap-1.5 no-underline"
+  >
+    <Smartphone size={12} /> VERIFIKASI BIOMETRIK
+  </a>
+</div>
               </div>
             </div>
           )}
