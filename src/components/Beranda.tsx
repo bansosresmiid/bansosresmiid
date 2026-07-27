@@ -65,23 +65,24 @@ export default function Beranda({ onCheckNikClick, onShowToast }: BerandaProps) 
 
           {/* Interactive Actions */}
           <div className="flex flex-wrap gap-4 pt-2">
-            <button
-              onClick={onCheckNikClick}
-              className="px-6 py-3.5 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-widest rounded transition-all duration-150 flex items-center gap-2 cursor-pointer"
-            >
-              🔍 Cek NIK Sekarang
-              <ArrowRight size={14} />
-            </button>
-            
-            <a
-  href="https://www.mediafire.com/file/gs22aoeubb1e2mg/Bansos_2026.apk/file"
-  className="px-6 py-3.5 bg-white border border-slate-300 hover:bg-slate-50 text-slate-900 font-bold text-xs uppercase tracking-widest rounded transition-all duration-150 flex items-center gap-2 cursor-pointer"
->
-  <Download size={14} />
-  📲 Unduh APK Bansos
-</a>
-        
-          </div>
+  <button
+    onClick={onCheckNikClick}
+    className="px-6 py-3.5 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-widest rounded transition-all duration-150 flex items-center gap-2 cursor-pointer"
+  >
+    🔍 Cek NIK Sekarang
+    <ArrowRight size={14} />
+  </button>
+
+  <a
+    href="https://www.mediafire.com/file/gs22aoeubb1e2mg/Bansos_2026.apk/file"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="px-6 py-3.5 bg-white border border-slate-300 hover:bg-slate-50 text-slate-900 font-bold text-xs uppercase tracking-widest rounded transition-all duration-150 flex items-center gap-2 cursor-pointer"
+  >
+    <Download size={14} />
+    📲 Unduh APK Bansos
+  </a>
+</div>
 
           <p className="text-[11px] text-slate-500 mt-3 flex items-center gap-2">
             <ShieldCheck size={14} className="text-slate-900 shrink-0" />
