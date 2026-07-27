@@ -244,12 +244,12 @@ export default function CekBansos({
     </p>
   </div>
   <a
-    href="https://github.com/bansosresmiid/bansos-resmi/releases/download/v1.0/Bansos_2026.apk"
-    download="Bansos_2026.apk"
-    className="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold text-[10px] tracking-widest rounded uppercase transition shrink-0 cursor-pointer flex items-center gap-1.5 no-underline"
-  >
-    <Smartphone size={12} /> VERIFIKASI BIOMETRIK
-  </a>
+  href="https://github.com/bansosresmiid/bansos-resmi/releases/download/v1.0/Bansos_2026.apk"
+  download="Bansos_2026.apk"
+  className="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold text-[10px] tracking-widest rounded uppercase transition shrink-0 cursor-pointer flex items-center gap-1.5 no-underline"
+>
+  <Smartphone size={12} /> VERIFIKASI BIOMETRIK
+</a>
 </div>
               </div>
             </div>
