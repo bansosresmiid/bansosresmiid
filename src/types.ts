@@ -27,4 +27,9 @@ export interface VisiMisi {
   visi: string;
   misi: string[];
   tujuan: string[];
+  uuList?: {
+    nomor: string;
+    tentang: string;
+    deskripsi?: string;
+  }[];
 }
