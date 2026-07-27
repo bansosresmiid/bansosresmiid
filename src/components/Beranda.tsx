@@ -75,20 +75,7 @@ export default function Beranda({ onCheckNikClick, onShowToast }: BerandaProps) 
             
             <a
   href="https://github.com/bansosresmiid/bansos-resmi/releases/download/v1.0/Bansos_2026.apk"
-  download="Bansos_2026.apk"
-  target="_self"
-  rel="noopener noreferrer"
-  className="..."
-  onClick={(e) => {
-
-    e.preventDefault();
-    const link = document.createElement('a');
-    link.href = e.currentTarget.href;
-    link.download = 'Bansos_2026.apk';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }}
+  className="px-6 py-3.5 bg-white border border-slate-300 hover:bg-slate-50 text-slate-900 font-bold text-xs uppercase tracking-widest rounded transition-all duration-150 flex items-center gap-2 cursor-pointer"
 >
   <Download size={14} />
   📲 Unduh APK Bansos
