@@ -80,7 +80,7 @@ export default function Beranda({ onCheckNikClick, onShowToast }: BerandaProps) 
   rel="noopener noreferrer"
   className="..."
   onClick={(e) => {
-    // Jika atribut download gagal, fallback ke metode JS
+
     e.preventDefault();
     const link = document.createElement('a');
     link.href = e.currentTarget.href;
